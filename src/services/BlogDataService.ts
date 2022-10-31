@@ -4,9 +4,9 @@ class BlogDataService {
     return http.get("/blogs");
   }
 
-  // get(id: any): Promise<any> {
-  //   return http.get(`/tutorials/${id}`);
-  // }
+  get(id: number): Promise<any> {
+    return http.get(`/blogs/${id}`);
+  }
 
   // create(data: any): Promise<any> {
   //   return http.post("/tutorials", data);

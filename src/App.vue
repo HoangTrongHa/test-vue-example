@@ -25,3 +25,9 @@ export default defineComponent({
   name: "App",
 });
 </script>
+
+<style>
+  .color-white {
+    color: #fff;
+  }
+</style>

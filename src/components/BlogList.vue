@@ -42,17 +42,26 @@
             <th scope="col">Ngày tạo</th>
             <th scope="col">Sửa lần cuối</th>
             <th scope="col">Số lượng bình luận</th>
+            <th scope="col">Hành Động</th>
           </tr>
         </thead>
         <tbody class="table-group-divider">
           <tr v-for="(blog, index) in blogs" :key="index">
             <th scope="row">{{ index + 1 }}</th>
-            <td><img width="30" :src="blog.image.url" alt="image"></td>
+            <td><img width="30" :src="blog.image.url" alt="image" /></td>
             <td>{{ blog.title }}</td>
             <td>{{ blog.content }}</td>
             <td>{{ blog.created_at }}</td>
             <td>{{ blog.updated_at }}</td>
             <td>{{ blog.comments_count }}</td>
+            <td class="d-flex">
+              <router-link class="color-white" :to="'/blog/' + blog.id">
+                <button type="button" class="btn btn-warning mx-1 color-white">
+                  Sửa
+                </button>
+              </router-link>
+              <button type="button" class="btn btn-danger mx-1">Xoá</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -93,7 +102,6 @@
 import { defineComponent } from "vue";
 import BlogDataService from "@/services/BlogDataService";
 import Blog from "@/types/Blog";
-import ResponseData from "@/types/ResponseData";
 
 export default defineComponent({
   name: "tutorials-list",
@@ -110,7 +118,6 @@ export default defineComponent({
       try {
         const res = await BlogDataService.getAll();
         this.blogs = Object.freeze(res.data.data.items);
-        console.log(this.blogs);
       } catch (e: any) {
         console.error(e);
       }
