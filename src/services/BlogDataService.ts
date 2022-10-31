@@ -1,5 +1,5 @@
 import http from "@/http-common";
-class TutorialDataService {
+class BlogDataService {
   getAll(): Promise<any> {
     return http.get("/blogs");
   }
@@ -29,4 +29,4 @@ class TutorialDataService {
   // }
 }
 
-export default new TutorialDataService();
+export default new BlogDataService();

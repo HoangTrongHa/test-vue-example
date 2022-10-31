@@ -36,8 +36,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import TutorialDataService from "@/services/TutorialDataService";
-import Tutorial from "@/types/Tutorial";
+import TutorialDataService from "@/services/BlogDataService";
+import Tutorial from "@/types/Blog";
 import ResponseData from "@/types/ResponseData";
 
 export default defineComponent({

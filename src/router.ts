@@ -6,7 +6,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/",
     alias: "/tutorials",
     name: "tutorials",
-    component: () => import("./components/TutorialsList.vue"),
+    component: () => import("./components/BlogList.vue"),
   }
   // {
   //   path: "/tutorials/:id",
