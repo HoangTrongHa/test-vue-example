@@ -9,6 +9,8 @@ import '@mdi/font/css/materialdesignicons.css'
 import "./plugins/axios";
 import VueToast from "vue-toast-notification";
 import "vue-toast-notification/dist/theme-sugar.css";
+import "./plugins/vee-validate";
+
 Vue.use(VueToast);
 Vue.config.productionTip = false
 

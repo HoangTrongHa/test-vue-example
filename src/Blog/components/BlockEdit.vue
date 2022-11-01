@@ -18,10 +18,10 @@
         </div>
         <div class="mt-5">
           <v-text-field
-            :disabled="$route.query?.showDetail"
-            label="Full Name"
+            label="Tiêu đề của bài viết"
             outlined
             v-model="blog.title"
+            :rules="ruleRequired('Tiêu đề của bài viết')"
           ></v-text-field>
         </div>
         <div class="mt-5">
@@ -31,6 +31,7 @@
             name="input-7-4"
             label="Nội Dung"
             v-model="blog.content"
+            :rules="ruleRequired('Nội Dung')"
           ></v-textarea>
         </div>
         <div v-if="!$route.query?.showDetail" class="wrapButton">
@@ -42,63 +43,7 @@
             Cập Nhật
           </v-btn>
         </div>
-        <!-- <div class="wrapAvatar">
-          <v-avatar size="300" class="wrapAvatarItem">
-            <img :src="item.avatar" @click="onButtonClick()" />
-            <input
-              ref="uploader"
-              class="d-none"
-              type="file"
-              accept="image/*"
-              @change="onFileChange"
-            />
-          </v-avatar>
-        </div>
-        <div class="wrapInfoProfile">
-          <v-text-field
-            label="Full Name"
-            outlined
-            v-model="item.name"
-          ></v-text-field>
-        </div>
-        <v-row>
-          <v-col cols="12" md="3">
-            <v-text-field
-              label="AGE"
-              outlined
-              v-model="item.old"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-text-field
-              label="Part"
-              outlined
-              v-model="item.part"
-            ></v-text-field>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-select
-              :items="itemsStatus"
-              label="Status"
-              outlined
-              v-model="item.status"
-            ></v-select>
-          </v-col>
-          <v-col cols="12" md="3">
-            <v-select
-              :items="itemsPosition"
-              label="Postion"
-              outlined
-              v-model="item.position"
-            ></v-select>
-          </v-col>
-          <div class="wrapButton">
-            <v-btn 
-              elevation="8" 
-              @click="saveData"
-            > Update Profile </v-btn>
-          </div>
-        </v-row> -->
+        
       </div>
     </v-container>
   </div>
@@ -107,11 +52,22 @@
 import { Component, Vue } from "vue-property-decorator";
 import BlogDataService from "@/services/BlogDataService";
 import Blog from "@/types/Blog";
+import {ValidationObserver, ValidationProvider} from "vee-validate";
 
-@Component
+@Component({
+  components: {
+    ValidationObserver,
+    ValidationProvider,
+  },
+})
 export default class BlockEdit extends Vue {
   blog = {} as Blog;
   imager = null; // handle change image
+  ruleRequired(field: string) {
+    return [
+    (v: string) => !!v || `${field} không được bỏ trống`
+    ]
+  }
   mount() {
     this.onButtonClick();
   }
