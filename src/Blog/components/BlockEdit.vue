@@ -35,6 +35,7 @@
           <v-btn
             depressed
             color="primary"
+            @click="updateData"
           >
             Cập Nhật
           </v-btn>
@@ -107,7 +108,7 @@ import Blog from "@/types/Blog";
 
 @Component
 export default class BlockEdit extends Vue {
-  blog: Blog[] = [];
+  blog = {} as Blog;
   imager = null; // handle change image
   mount() {
     this.onButtonClick();
@@ -116,7 +117,27 @@ export default class BlockEdit extends Vue {
     // @ts-expect-error xóa lỗi
     this.$refs.uploader.click();
   }
-
+  updateData() {
+    const data = {
+      id: this.blog.id,
+      title: this.blog.title,
+      content: this.blog.content,
+      image: {
+        url: this.blog.image.url
+      },
+      created_at: this.blog.created_at,
+      updated_at: this.blog.updated_at,
+      comments_count: this.blog.comments_count
+    }
+    BlogDataService.update(Number(this.$route.params?.id), data)
+      .then((response) => {
+        this.blog = response.data.data;
+        console.log(this.blog);
+      })
+      .catch((errors) => {
+        console.log(errors);
+      });
+  }
   // convert image to base 64
   onFileChange(e: any) {
     var files = e.target.files || e.dataTransfer.files;
@@ -146,9 +167,3 @@ export default class BlockEdit extends Vue {
   }
 }
 </script>
-
-<style>
-  .cursor-pointer {
-    cursor: pointer;
-  }
-</style>

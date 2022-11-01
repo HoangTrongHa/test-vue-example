@@ -1,4 +1,6 @@
 import http from "@/http-common";
+import Blog from "@/types/Blog";
+
 class BlogDataService {
   getAll(): Promise<any> {
     return http.get("/blogs");
@@ -12,9 +14,9 @@ class BlogDataService {
   //   return http.post("/tutorials", data);
   // }
 
-  // update(id: any, data: any): Promise<any> {
-  //   return http.put(`/tutorials/${id}`, data);
-  // }
+  update(id: number, data: Blog): Promise<any> {
+    return http.put(`/blogs/${id}`, data);
+  }
 
   // delete(id: any): Promise<any> {
   //   return http.delete(`/tutorials/${id}`);
