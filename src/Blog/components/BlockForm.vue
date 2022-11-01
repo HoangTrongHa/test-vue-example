@@ -95,41 +95,32 @@ export default class BlockEdit extends Vue {
     this.$refs.uploader.click();
   }
   updateData() {
-    const data = {
-      id: this.blog.id,
-      title: this.blog.title,
-      content: this.blog.content,
-      image: {
-        url: this.blog.image.url
-      },
-      created_at: this.blog.created_at,
-      updated_at: this.blog.updated_at,
-      comments_count: this.blog.comments_count
-    }
+    let data = new FormData();
+    data.append('blog[title]', this.blog.title);
+    data.append('blog[content]', this.blog.content);
+    data.append('blog[image]', this.blog.image.url);
     BlogDataService.update(Number(this.$route.params?.id), data)
       .then((response) => {
-        this.blog = response.data.data;
-        console.log(this.blog);
+        this.$router.push({ name: 'block-list' })
+        this.$toast.open({
+          message: "Sửa thành công",
+          type: "success",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
       })
       .catch((errors) => {
-        console.log(errors);
+        console.error(errors);
       });
   }
   createData() {
-    const data = {
-      id: this.blog.id,
-      title: this.blog.title,
-      content: this.blog.content,
-      image: {
-        url: "https://api-placeholder.herokuapp.com/images/fallback/default.png"
-      },
-      created_at: "2022-11-01T17:09:39.823Z", 
-      updated_at: "2022-11-01T17:09:39.823Z",
-      comments_count: 0
-    }
+    let data = new FormData();
+    data.append('blog[title]', this.blog.title);
+    data.append('blog[content]', this.blog.content);
+    data.append('blog[image]', this.blog.image.url);
     BlogDataService.create(data)
       .then((response) => {
-        console.log(response);
         this.$router.push({ name: 'block-list' })
         this.$toast.open({
           message: "Thêm mới thành công",
@@ -140,7 +131,7 @@ export default class BlockEdit extends Vue {
         });
       })
       .catch((errors) => {
-        console.log(errors);
+        console.error(errors);
         this.$toast.open({
           message: errors.message,
           type: "error",
@@ -172,7 +163,6 @@ export default class BlockEdit extends Vue {
       BlogDataService.get(Number(this.$route.params?.id))
         .then((response) => {
           this.blog = response.data.data;
-          console.log(this.blog);
         })
         .catch((errors) => {
           console.log(errors);

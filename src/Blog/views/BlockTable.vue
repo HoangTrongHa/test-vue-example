@@ -78,7 +78,9 @@
     <div class="text-center mt-5">
       <v-pagination
         v-model="page"
-        :length="6"
+        :length="totalPage"
+        circle
+        :total-visible="7"
       ></v-pagination>
     </div>
     <ConfirmDelete
@@ -90,7 +92,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import Blog from "@/types/Blog";
 import BlogDataService from "@/services/BlogDataService";
 import ConfirmDelete from "@/Blog/components/ConfirmDelete.vue"
@@ -105,6 +107,7 @@ export default class BlockList extends Vue {
   dialog = false;
   tempId = 0;
   page = 1;
+  totalPage = 0;
   headers = [
     {
       text: 'STT',
@@ -131,7 +134,6 @@ export default class BlockList extends Vue {
   deleteItem(id: number) {
     BlogDataService.delete(id)
       .then((response) => {
-        console.log('response', response);
         this.retrieveBlog();
         this.$toast.open({
           message: "Delete successfully",
@@ -142,15 +144,22 @@ export default class BlockList extends Vue {
         });
       })
       .catch((errors) => {
-        console.log(errors);
+        console.error(errors);
       });
   }
   retrieveBlog() {
-    BlogDataService.getAll()
+    this.$route.query.page ? this.page = Number(this.$route.query.page) : this.page = 1
+    BlogDataService.getAll(this.page)
       .then((response) => {
         this.blogs = response.data.data.items;
+        this.totalPage = response.data.pagination.total;
       })
       .catch(console.log);
+  }
+  @Watch('page')
+  changed(newVal: number) {
+    this.$route.query.page = newVal.toString();
+    this.retrieveBlog();
   }
   mounted() {
     this.retrieveBlog();

@@ -7,6 +7,11 @@ const routes: RouteConfig[] = [
     component: () => import('@/views/HomeView.vue')
   },
   {
+    path: '/block-list',
+    name: 'block-list',
+    component: () => import('@/views/HomeView.vue')
+  },
+  {
     path: '/block-edit/:id',
     name: 'block-edit',
     component: () => import('@/Blog/components/BlockForm.vue')

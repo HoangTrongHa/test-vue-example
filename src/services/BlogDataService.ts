@@ -2,19 +2,19 @@ import http from "@/http-common";
 import Blog from "@/types/Blog";
 
 class BlogDataService {
-  getAll(): Promise<any> {
-    return http.get("/blogs");
+  getAll(page: number): Promise<any> {
+    return http.get(`/blogs?page=${page}`);
   }
 
   get(id: number): Promise<any> {
     return http.get(`/blogs/${id}`);
   }
 
-  create(data: Blog): Promise<any> {
+  create(data: any): Promise<any> {
     return http.post("/blogs", data);
   }
 
-  update(id: number, data: Blog): Promise<any> {
+  update(id: number, data: any): Promise<any> {
     return http.put(`/blogs/${id}`, data);
   }
 
