@@ -6,7 +6,7 @@
         Bấm Vào ảnh để thay đổi ảnh mới
         <div class="mt-5">
           <v-avatar size="300">
-            <img class="cursor-pointer" :src="blog.image.url" @click="onButtonClick()" />
+            <img class="cursor-pointer" :src="blog.image?.url" @click="onButtonClick()" />
             <input
               ref="uploader"
               class="d-none"
@@ -37,11 +37,20 @@
         </div>
         <div v-if="!$route.query?.showDetail" class="wrapButton">
           <v-btn
+            v-if="$route.name === 'block-edit'"
             depressed
             color="primary"
             @click="updateData"
           >
             Cập Nhật
+          </v-btn>
+          <v-btn
+            v-else
+            depressed
+            color="primary"
+            @click="createData"
+          >
+            Thêm Bài Viết
           </v-btn>
         </div>
         
@@ -62,7 +71,16 @@ import {ValidationObserver, ValidationProvider} from "vee-validate";
   },
 })
 export default class BlockEdit extends Vue {
-  blog = {} as Blog;
+  blog = {
+    id: 1,
+    title: '',
+    content: '',
+    image: {
+      url: 'https://e7.pngegg.com/pngimages/914/512/png-clipart-icloud-clip-cart-upload-computer-icons-computer-file-icon-drawing-upload-miscellaneous-blue.png',
+    },
+    created_at: '',
+    updated_at: '',
+  } as Blog;
   imager = null; // handle change image
   ruleRequired(field: string) {
     return [
@@ -97,6 +115,41 @@ export default class BlockEdit extends Vue {
         console.log(errors);
       });
   }
+  createData() {
+    const data = {
+      id: this.blog.id,
+      title: this.blog.title,
+      content: this.blog.content,
+      image: {
+        url: "https://api-placeholder.herokuapp.com/images/fallback/default.png"
+      },
+      created_at: "2022-11-01T17:09:39.823Z", 
+      updated_at: "2022-11-01T17:09:39.823Z",
+      comments_count: 0
+    }
+    BlogDataService.create(data)
+      .then((response) => {
+        console.log(response);
+        this.$router.push({ name: 'block-list' })
+        this.$toast.open({
+          message: "Thêm mới thành công",
+          type: "success",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      })
+      .catch((errors) => {
+        console.log(errors);
+        this.$toast.open({
+          message: errors.message,
+          type: "error",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      });
+  }
   // convert image to base 64
   onFileChange(e: any) {
     var files = e.target.files || e.dataTransfer.files;
@@ -115,14 +168,16 @@ export default class BlockEdit extends Vue {
     });
   }
   created() {
-    BlogDataService.get(Number(this.$route.params?.id))
-      .then((response) => {
-        this.blog = response.data.data;
-        console.log(this.blog);
-      })
-      .catch((errors) => {
-        console.log(errors);
-      });
+    if (this.$route.name === 'block-edit') {
+      BlogDataService.get(Number(this.$route.params?.id))
+        .then((response) => {
+          this.blog = response.data.data;
+          console.log(this.blog);
+        })
+        .catch((errors) => {
+          console.log(errors);
+        });
+    }
   }
 }
 </script>

@@ -10,9 +10,9 @@ class BlogDataService {
     return http.get(`/blogs/${id}`);
   }
 
-  // create(data: any): Promise<any> {
-  //   return http.post("/tutorials", data);
-  // }
+  create(data: Blog): Promise<any> {
+    return http.post("/blogs", data);
+  }
 
   update(id: number, data: Blog): Promise<any> {
     return http.put(`/blogs/${id}`, data);

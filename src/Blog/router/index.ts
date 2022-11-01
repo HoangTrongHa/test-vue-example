@@ -9,7 +9,12 @@ const routes: RouteConfig[] = [
   {
     path: '/block-edit/:id',
     name: 'block-edit',
-    component: () => import('@/Blog/components/BlockEdit.vue')
+    component: () => import('@/Blog/components/BlockForm.vue')
+  },
+  {
+    path: '/block-add',
+    name: 'block-add',
+    component: () => import('@/Blog/components/BlockForm.vue')
   }
 ];
 

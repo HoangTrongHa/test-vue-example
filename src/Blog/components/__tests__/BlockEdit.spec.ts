@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import BlockEdit from '@/Blog/components/BlockEdit.vue'
+import BlockEdit from '@/Blog/components/BlockForm.vue'
 import flushPromises from 'flush-promises';
 
 function factory() {
