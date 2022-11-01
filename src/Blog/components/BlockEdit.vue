@@ -18,6 +18,7 @@
         </div>
         <div class="mt-5">
           <v-text-field
+            :disabled="$route.query?.showDetail"
             label="Tiêu đề của bài viết"
             outlined
             v-model="blog.title"
