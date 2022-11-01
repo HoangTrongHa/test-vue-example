@@ -19,7 +19,7 @@
       <template v-slot:top>
         <v-text-field
           v-model="search"
-          label="Search (UPPER CASE ONLY)"
+          label="Search"
           class="mx-4"
         ></v-text-field>
       </template>
@@ -83,7 +83,7 @@ import ConfirmDelete from "@/Blog/components/ConfirmDelete.vue"
 })
 export default class BlockList extends Vue {
   blogs: Blog[] = [];
-  search!: string;
+  search = '';
   dialog = false;
   tempId = 0;
   headers = [
