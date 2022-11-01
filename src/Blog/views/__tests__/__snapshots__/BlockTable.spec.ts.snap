@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlockTable.vue should match snapshot 1`] = `
+<div>
+  <v-data-table-stub
+    class="elevation-1"
+    headers="[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]"
+    item-key="name"
+    items=""
+    search=""
+  />
+   
+  <div
+    class="text-center mt-5"
+  >
+    <v-pagination-stub
+      length="6"
+      value="1"
+    />
+  </div>
+   
+  <confirmdelete-stub />
+</div>
+`;

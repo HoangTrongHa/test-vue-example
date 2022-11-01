@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConfirmDelete.vue should match snapshot 1`] = `
+<v-row-stub
+  justify="center"
+>
+  <v-dialog-stub
+    max-width="400"
+  >
+    <v-card>
+      <v-card-title-stub
+        class="text-h5"
+      >
+         Chuẩn Chưa 
+      </v-card-title-stub>
+       
+      <v-card-actions-stub>
+        <v-spacer-stub />
+         
+        <v-btn-stub
+          color="green darken-1"
+          text=""
+        >
+          
+          Chưa
+        
+        </v-btn-stub>
+         
+        <v-btn-stub
+          color="green darken-1"
+          text=""
+        >
+           Chuẩn 
+        </v-btn-stub>
+      </v-card-actions-stub>
+    </v-card>
+  </v-dialog-stub>
+</v-row-stub>
+`;

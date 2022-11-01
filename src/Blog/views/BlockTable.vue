@@ -63,6 +63,13 @@
         </div>
       </template>
     </v-data-table>
+    <!-- pagination -->
+    <div class="text-center mt-5">
+      <v-pagination
+        v-model="page"
+        :length="6"
+      ></v-pagination>
+    </div>
     <ConfirmDelete
       :dialog="dialog"
       @update-dialog="dialog = $event"
@@ -86,6 +93,7 @@ export default class BlockList extends Vue {
   search = '';
   dialog = false;
   tempId = 0;
+  page = 1;
   headers = [
     {
       text: 'STT',
