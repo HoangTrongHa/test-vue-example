@@ -18,9 +18,9 @@ class BlogDataService {
     return http.put(`/blogs/${id}`, data);
   }
 
-  // delete(id: any): Promise<any> {
-  //   return http.delete(`/tutorials/${id}`);
-  // }
+  delete(id: number): Promise<any> {
+    return http.delete(`/blogs/${id}`);
+  }
 
   // deleteAll(): Promise<any> {
   //   return http.delete(`/tutorials`);

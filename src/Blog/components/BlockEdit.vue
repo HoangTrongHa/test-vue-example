@@ -18,6 +18,7 @@
         </div>
         <div class="mt-5">
           <v-text-field
+            :disabled="$route.query?.showDetail"
             label="Full Name"
             outlined
             v-model="blog.title"
@@ -25,13 +26,14 @@
         </div>
         <div class="mt-5">
           <v-textarea
+            :disabled="$route.query?.showDetail"
             outlined
             name="input-7-4"
             label="Nội Dung"
             v-model="blog.content"
           ></v-textarea>
         </div>
-        <div class="wrapButton">
+        <div v-if="!$route.query?.showDetail" class="wrapButton">
           <v-btn
             depressed
             color="primary"

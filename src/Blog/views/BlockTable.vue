@@ -27,6 +27,21 @@
         <div class="d-flex">
           <v-btn
             tile
+            color="primary"
+            class="mx-2"
+            @click="$router.push({ 
+              name: 'block-edit', 
+              params: { id: item.id }, 
+              query: { showDetail: true } 
+            })"
+          >
+            <v-icon left>
+              mdi-send
+            </v-icon>
+            Chi Tiết
+          </v-btn>
+          <v-btn
+            tile
             color="success"
             class="mx-2"
             @click="$router.push({ name: 'block-edit', params: { id: item.id } })"
@@ -37,16 +52,22 @@
             Sửa
           </v-btn>
           <v-btn
-            tile
             color="error"
-            class="mx-2"
+            @click="prepareDelete(item.id)"
           >
-          <v-icon dark> mdi-delete-outline </v-icon>
+            <v-icon left>
+              mdi-delete-outline
+            </v-icon>
             Xoá
           </v-btn>
         </div>
       </template>
     </v-data-table>
+    <ConfirmDelete
+      :dialog="dialog"
+      @update-dialog="dialog = $event"
+      @confirm="onConfirm"
+    />
   </div>
 </template>
 
@@ -54,10 +75,17 @@
 import { Vue, Component } from "vue-property-decorator";
 import Blog from "@/types/Blog";
 import BlogDataService from "@/services/BlogDataService";
-@Component({})
+import ConfirmDelete from "@/Blog/components/ConfirmDelete.vue"
+@Component({
+  components: {
+    ConfirmDelete,
+  },
+})
 export default class BlockList extends Vue {
   blogs: Blog[] = [];
   search!: string;
+  dialog = false;
+  tempId = 0;
   headers = [
     {
       text: 'STT',
@@ -73,14 +101,35 @@ export default class BlockList extends Vue {
     { text: 'Số lượng bình luận', value: 'comments_count' },
     { text: 'Hành Động', value: 'action' },
   ];
-item: any;
-  
+  item: any;
+  prepareDelete(id: number) {
+    this.tempId = id;
+    this.dialog = true;
+  }
+  onConfirm() {
+    this.deleteItem(this.tempId);
+  }
+  deleteItem(id: number) {
+    BlogDataService.delete(id)
+      .then((response) => {
+        console.log('response', response);
+        this.retrieveBlog();
+        this.$toast.open({
+          message: "Delete successfully",
+          type: "success",
+          duration: 5000,
+          dismissible: true,
+          position: "top-right",
+        });
+      })
+      .catch((errors) => {
+        console.log(errors);
+      });
+  }
   retrieveBlog() {
     BlogDataService.getAll()
       .then((response) => {
-        console.log(response);
         this.blogs = response.data.data.items;
-        console.log(response.data);
       })
       .catch(console.log);
   }
