@@ -1,17 +1,18 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
+import { blog } from "./modules/blog";
 
-Vue.use(Vuex)
+import { RootState } from "./modules/types";
 
-export default new Vuex.Store({
+Vue.use(Vuex);
+
+export default new Vuex.Store<RootState>({
   state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
+    version: "1.0.0", // a simple property
   },
   modules: {
-  }
-})
+    blog,
+  },
+  mutations: {},
+  actions: {},
+});
