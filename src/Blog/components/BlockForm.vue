@@ -3,18 +3,13 @@
     <v-container>
       <div class="wrapProfile">
         <h1>Chi Tiết Bài Đăng</h1>
-        Bấm Vào ảnh để thay đổi ảnh mới
         <div class="mt-5">
-          <v-avatar size="300">
-            <img class="cursor-pointer" :src="blog.image?.url" @click="onButtonClick()" />
-            <input
-              ref="uploader"
-              class="d-none"
-              type="file"
-              accept="image/*"
-              @change="onFileChange"
-            />
-          </v-avatar>
+            <!-- <img class="cursor-pointer" :src="blog.image?.url" @click="onButtonClick()" /> -->
+            <v-file-input 
+              v-model="fileUpload" 
+              label="Bấm vào đây để sửa ảnh"
+            ></v-file-input>
+            <img class="cursor-pointer" :src="blog.image?.url" />
         </div>
         <div class="mt-5">
           <v-text-field
@@ -38,11 +33,16 @@
         <div v-if="!$route.query?.showDetail" class="wrapButton">
           <v-btn
             v-if="$route.name === 'block-edit'"
-            depressed
-            color="primary"
+            class="ma-2"
+            color="info"
             @click="updateData"
           >
             Cập Nhật
+            <template v-slot:loader>
+              <span class="custom-loader">
+                <v-icon light>mdi-cached</v-icon>
+              </span>
+            </template>
           </v-btn>
           <v-btn
             v-else
@@ -59,7 +59,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import BlogDataService from "@/services/BlogDataService";
 import Blog from "@/types/Blog";
 import {ValidationObserver, ValidationProvider} from "vee-validate";
@@ -82,23 +82,36 @@ export default class BlockEdit extends Vue {
     updated_at: '',
   } as Blog;
   imager = null; // handle change image
+  fileUpload: Blob | null = null;
+  loading = false;
   ruleRequired(field: string) {
     return [
     (v: string) => !!v || `${field} không được bỏ trống`
     ]
   }
-  mount() {
-    this.onButtonClick();
-  }
-  onButtonClick() {
-    // @ts-expect-error xóa lỗi
-    this.$refs.uploader.click();
+  @Watch('fileUpload')
+  changeImage(newValue: any) {
+    var reader = new FileReader()
+    reader.readAsDataURL(newValue);
+    reader.onload = () => {
+      (this.blog.image.url as any) = reader.result
+    };
   }
   updateData() {
+    this.loading = true
     let data = new FormData();
     data.append('blog[title]', this.blog.title);
     data.append('blog[content]', this.blog.content);
-    data.append('blog[image]', this.blog.image.url);
+    if (this.fileUpload) {
+      data.append('blog[image]', this.fileUpload);
+    }
+    this.$toast.open({
+      message: "Đợi Tý Đang Tạo",
+      type: "warning",
+      duration: 5000,
+      dismissible: true,
+      position: "top-right",
+    });
     BlogDataService.update(Number(this.$route.params?.id), data)
       .then((response) => {
         this.$router.push({ name: 'block-list' })
@@ -113,12 +126,20 @@ export default class BlockEdit extends Vue {
       .catch((errors) => {
         console.error(errors);
       });
+    this.loading = false;
   }
   createData() {
     let data = new FormData();
     data.append('blog[title]', this.blog.title);
     data.append('blog[content]', this.blog.content);
     data.append('blog[image]', this.blog.image.url);
+    this.$toast.open({
+      message: "Đợi Tý Đang Tạo",
+      type: "warning",
+      duration: 5000,
+      dismissible: true,
+      position: "top-right",
+    });
     BlogDataService.create(data)
       .then((response) => {
         this.$router.push({ name: 'block-list' })
@@ -143,6 +164,7 @@ export default class BlockEdit extends Vue {
   }
   // convert image to base 64
   onFileChange(e: any) {
+    console.log(1, e);
     var files = e.target.files || e.dataTransfer.files;
     if (!files.length) return;
     this.imager = files[0];

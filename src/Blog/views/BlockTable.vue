@@ -27,17 +27,6 @@
         <div class="d-flex">
           <v-btn
             tile
-            color="secondary"            
-            class="mx-2"
-            @click="$router.push({ name: 'block-add' })"
-          >
-            <v-icon left>
-              mdi-send
-            </v-icon>
-            Thêm mới bài viết
-          </v-btn>
-          <v-btn
-            tile
             color="primary"
             class="mx-2"
             @click="$router.push({ 
